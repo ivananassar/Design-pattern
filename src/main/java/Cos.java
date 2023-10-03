@@ -59,7 +59,7 @@ public class Cos{
         ObjetBase modele2=new Modele("kt700", null);
         modele2.setSuivant(marque1);
         ObjetBase vehicule3= new Vehicule(null);
-        vehicule3.setSuivant(modele2);
+        vehicule3.setSuivant(modele1);
         System.out.println(vehicule3.getDescription());
         ObjetBase vehicule4= new Vehicule(null);
         System.out.println(vehicule4.getDescription());

@@ -14,13 +14,41 @@ class DrawingAPI2 implements DrawingAPI {
         System.out.printf("API2.circle at %f:%f radius %f\n", x, y, radius);
     }
 }
- /** "Abstraction" */
+interface DrawingSAPI {
+    public void drawSquare(double x);
+}
+/** "ConcreteImplementor" 1/2 */
+class DrawingsAPI1 implements DrawingSAPI {
+    public void drawSquare(double x) {
+        System.out.printf("API1.square at %f\n", x);
+    }
+}
+/** "Abstraction" */
          interface Shape {
  public void draw();                                            // low-level
  public void resizeByPercentage(double pct);     // high-level
  }
 
          /** "Refined Abstraction" */
+         class SquareShape implements Shape {
+             private double x;
+             private DrawingSAPI drawingAPI;
+
+             public SquareShape(double x, DrawingSAPI drawingAPI) {
+                 this.x = x;
+                 this.drawingAPI = drawingAPI;
+             }
+
+             // low-level i.e. Implementation specific
+             public void draw() {
+                 drawingAPI.drawSquare(x);
+             }
+
+             // high-level i.e. Abstraction specific
+             public void resizeByPercentage(double pct) {
+                 x *= pct;
+             }
+         }
          class CircleShape implements Shape {
              private double x, y, radius;
              private DrawingAPI drawingAPI;
@@ -45,9 +73,10 @@ class DrawingAPI2 implements DrawingAPI {
              /** "Client" */
 public class Bridge {
      public static void main(String[] args) {
-        Shape[] shapes = new Shape[2];
+        Shape[] shapes = new Shape[3];
         shapes[0] = new CircleShape(1, 2, 3, new DrawingAPI1());
         shapes[1] = new CircleShape(5, 7, 11, new DrawingAPI2());
+        shapes[2] = new SquareShape(5, new DrawingsAPI1());
         for (Shape shape : shapes) {
            shape.resizeByPercentage(2.5);
            shape.draw();
